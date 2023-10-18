@@ -17,7 +17,7 @@ function requestHandler(req, res) {
                 'Content-Type': 'text/html'
             });
 
-            fs.readFile('./views/cats.html', function (err, data) {//to fix
+            fs.readFile('./views/cats.html', function (err, data) {
                 if (err) {
                     console.log('Some error');
                     return;

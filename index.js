@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const fs = require('fs');
 const querystring = require('querystring');
 const port = 5000;
 
@@ -10,14 +11,21 @@ function requestHandler(req, res) {
     console.log(params);
     console.log(reqUrl.pathname);
 
-
-
     switch (reqUrl.pathname) {
         case '/cats':
             res.writeHead(200, {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'text/html'
             });
-            res.write('Hello kittens');
+
+            fs.readFile('./views/cats.html', function (err, data) {//to fix
+                if (err) {
+                    console.log('Some error');
+                    return;
+                }
+
+                res.write(data);
+                res.end();
+            });
             break;
         case '/dogs':
             res.writeHead(200, {
@@ -26,15 +34,16 @@ function requestHandler(req, res) {
             res.write(`
                 <h1>Hello Dogs</h1>
             `);
+            res.end();
             break;
         default:
             res.writeHead(404, {
                 'Content-Type': 'text/plain'
             });
+            res.end();
             break;
     }
 
-    res.end();
 }
 
 const app = http.createServer(requestHandler)
